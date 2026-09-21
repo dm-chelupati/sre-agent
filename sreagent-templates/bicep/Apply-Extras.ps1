@@ -736,7 +736,7 @@ if ($kiCount -gt 0) {
                 $httpCode = $lines[-1]
                 if ($httpCode -match '^2') {
                     Write-Host "  ok knowledgeItems/$sanitized"
-                } elseif ($httpCode -eq '400') {
+                } elseif ($httpCode -in @('400', '405')) {
                     $existingCode = curl -sS -o /dev/null -w "%{http_code}" $url `
                         -H "Authorization: Bearer $token" 2>$null
                     if ($existingCode -match '^2') {
