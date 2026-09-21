@@ -898,10 +898,15 @@ if ($toolPermissions) {
             $currentSettings = Invoke-WebRequest -TimeoutSec 30 -Uri $settingsUrl `
                 -Headers @{ Authorization = "Bearer $token" } -ErrorAction Stop
             $etags = @($currentSettings.Headers.ETag)
-            if ($etags.Count -ne 1 -or [string]$etags[0] -cnotmatch '^"[^"\r\n]+"$') {
+            if ($etags.Count -eq 0 -or [string]::IsNullOrWhiteSpace([string]$etags[0])) {
+                $etag = '*'
+            }
+            elseif ($etags.Count -ne 1 -or [string]$etags[0] -cnotmatch '^"[^"\r\n]+"$') {
                 throw 'A single strong ETag is required for the settings update.'
             }
-            $etag = [string]$etags[0]
+            else {
+                $etag = [string]$etags[0]
+            }
             $settings = $currentSettings.Content | ConvertFrom-Json -AsHashtable -ErrorAction Stop
             if ($settings -isnot [System.Collections.IDictionary]) { throw 'Expected a settings object.' }
             $settings['permissions'] = $toolPermissions

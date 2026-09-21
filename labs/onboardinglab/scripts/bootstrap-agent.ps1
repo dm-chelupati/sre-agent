@@ -1115,7 +1115,7 @@ temporary Owner on it.
 if ($startThread) {
     $dpToken = $dataPlaneToken
 
-    $body = @{ StartMessage = $startMessage } | ConvertTo-Json -Depth 5
+    $body = @{ StartMessage = @{ Text = $startMessage } } | ConvertTo-Json -Depth 5
 
     try {
         $thread = Invoke-RestMethod -Uri "$agentEndpoint/api/v1/threads" -Method Post `
