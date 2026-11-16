@@ -72,8 +72,46 @@ cd sre-agent/sreagent-templates
 | [pagerduty-law-vmcosmos](recipes/pagerduty-law-vmcosmos/) | PagerDuty | VM + CosmosDB + HTTP error investigation with knowledge files and skills |
 | [dynatrace-mcp](recipes/dynatrace-mcp/) | Dynatrace | Dynatrace MCP connector for investigating application errors |
 | [minimal](recipes/minimal/) | (none) | Minimal agent — just infra + RBAC, add your own connectors and skills |
+| [caldova-platform-sre](recipes/caldova-platform-sre/) | Azure Monitor + A2A | Shared-platform agent with one-level delegation to the two Caldova application teams |
+| [caldova-orders-sre](recipes/caldova-orders-sre/) | Azure Monitor + A2A | Prescription Orders team agent accepting only the Caldova platform caller |
+| [caldova-medication-risk-sre](recipes/caldova-medication-risk-sre/) | Azure Monitor + A2A | Medication Risk team agent accepting only the Caldova platform caller |
 
 Each recipe README has the full parameter list, example values, and post-deploy steps.
+
+### A2A connections
+
+An A2A-enabled recipe sets `toggles.enableA2A` in `agent.json` and declares connections in `a2a.json`. Incoming entries identify an allowed caller agent; outgoing entries identify a target agent. `assemble-agent.sh` includes the declarations in the extras file, and `apply-extras.sh` resolves identities and endpoints, applies the connections idempotently, and verifies authenticated agent-card discovery.
+
+Each incoming caller expands to allowlist entries for its system-assigned and user-assigned identities. The deployment also grants both identities the target-scoped `SRE Agent Agent-to-Agent Caller` and `SRE Agent Standard User` roles required by the current A2A agent-card contract. For managed-identity outgoing connections, `identity: null` resolves to the source agent's UAMI by client ID.
+
+```json
+{
+  "incoming": [
+    {
+      "caller": {
+        "resourceGroup": "rg-agents",
+        "name": "platform-sre"
+      },
+      "handler": "meta_agent",
+      "enabled": true
+    }
+  ],
+  "outgoing": [
+    {
+      "name": "orders-sre",
+      "target": {
+        "resourceGroup": "rg-agents",
+        "name": "orders-sre"
+      },
+      "enabled": true,
+      "authentication": {
+        "kind": "managedIdentity",
+        "identity": null
+      }
+    }
+  ]
+}
+```
 
 > **Want a recipe for a different platform?** [Open a recipe request](https://github.com/microsoft/sre-agent/issues/new?template=recipe_request.md).
 

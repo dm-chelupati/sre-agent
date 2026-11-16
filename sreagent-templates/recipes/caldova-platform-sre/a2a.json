@@ -1,0 +1,31 @@
+{
+  "incoming": [],
+  "outgoing": [
+    {
+      "name": "caldova-orders-sre",
+      "description": "Caldova Prescription Orders team agent.",
+      "target": {
+        "resourceGroup": "{{resourceGroup}}",
+        "name": "caldova-orders-sre"
+      },
+      "enabled": true,
+      "authentication": {
+        "kind": "managedIdentity",
+        "identity": null
+      }
+    },
+    {
+      "name": "caldova-medication-risk-sre",
+      "description": "Caldova Medication Risk team agent.",
+      "target": {
+        "resourceGroup": "{{resourceGroup}}",
+        "name": "caldova-medication-risk-sre"
+      },
+      "enabled": true,
+      "authentication": {
+        "kind": "managedIdentity",
+        "identity": null
+      }
+    }
+  ]
+}

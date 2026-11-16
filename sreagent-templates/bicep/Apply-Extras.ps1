@@ -1244,6 +1244,25 @@ if ($HttpTriggerUrl) {
     }
 }
 
+# ── A2A incoming/outgoing connections ──────────────────────────────────────
+$a2aIncoming = @($extras.a2a.incoming).Count
+$a2aOutgoing = @($extras.a2a.outgoing).Count
+$a2aCount = $a2aIncoming + $a2aOutgoing
+if ($a2aCount -gt 0) {
+    if ($DpTokenAvailable) {
+        $configureA2a = Join-Path $PSScriptRoot 'Configure-A2A.ps1'
+        try {
+            & $configureA2a -Subscription $Subscription -ResourceGroup $ResourceGroup -AgentName $AgentName -ExtrasFile $ExtrasFile
+        } catch {
+            Write-Host "a2a - FAILED: $($_.Exception.Message)"
+            $ExtendedItemFailures.Add("a2a ($a2aCount connections)")
+        }
+    } else {
+        Write-Host "a2a - skipped (no data-plane token)"
+        $DpSkippedItems.Add("a2a ($a2aCount connections)")
+    }
+}
+
 # ═════════════════════════════════════════════════════════════════════════════
 # 5. Post-deploy auth wiring (data-plane). All optional — driven by env vars.
 # ═════════════════════════════════════════════════════════════════════════════

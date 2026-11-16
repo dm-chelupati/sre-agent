@@ -1,0 +1,24 @@
+{
+  "name": "@caldova/risk",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/server.js",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "tsc -b --clean",
+    "dev": "tsx --watch --import ./src/instrumentation.ts ./src/server.ts",
+    "migrate": "node ./dist/migrate.js",
+    "start": "node --import ./dist/instrumentation.js ./dist/server.js",
+    "typecheck": "tsc -b --pretty false"
+  },
+  "dependencies": {
+    "@caldova/contracts": "1.0.0",
+    "@caldova/platform": "1.0.0",
+    "compression": "^1.8.1",
+    "express": "^4.21.2",
+    "helmet": "^8.1.0",
+    "pg": "^8.16.3",
+    "zod": "^4.1.12"
+  }
+}

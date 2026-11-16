@@ -65,6 +65,9 @@ fi
 
 TOKEN=$(az account get-access-token --resource https://azuresre.dev --query accessToken -o tsv 2>/dev/null)
 if [[ -z "$TOKEN" ]]; then
+  TOKEN=$(az account get-access-token --resource 59f0a04a-b322-4310-adc9-39ac41e9631e --query accessToken -o tsv 2>/dev/null)
+fi
+if [[ -z "$TOKEN" ]]; then
   echo "FAIL: Could not get data-plane token"
   exit 1
 fi
@@ -147,6 +150,19 @@ check "Action mode" "$(echo "$PROPS" | jq -r '.mode')" "$(exp '.agent.actionMode
 check "Upgrade channel" "$(echo "$PROPS" | jq -r '.upgradeChannel')" "$(exp '.agent.upgradeChannel')"
 check "Model provider" "$(echo "$PROPS" | jq -r '.modelProvider')" "$(exp '.agent.defaultModelProvider')"
 check "Incident platform" "$(echo "$PROPS" | jq -r '.incidentPlatform')" "$(exp '.agent.incidentPlatform')"
+
+# ── Agent-to-agent connections ──
+if [[ -n "$EXPECTED_CONFIG" && $(echo "$EXPECTED_CONFIG" | jq 'has("a2a-incoming") or has("a2a-outgoing")') == "true" ]]; then
+  A2A_INCOMING=$(dp_get "/api/v2/a2a/incoming-connections")
+  A2A_OUTGOING=$(dp_get "/api/v2/a2a/outgoing-connections")
+  A2A_INCOMING_CT=$(echo "$A2A_INCOMING" | jq '(.value // []) | length' 2>/dev/null || echo 0)
+  A2A_OUTGOING_CT=$(echo "$A2A_OUTGOING" | jq 'if type == "array" then length else 0 end' 2>/dev/null || echo 0)
+  A2A_OUTGOING_HEALTHY=$(echo "$A2A_OUTGOING" | jq '[.[] | select(.enabled == true and .discovery.fetchedAt != null and .discovery.lastError == null)] | length' 2>/dev/null || echo 0)
+  check "A2A enabled" "$(echo "$PROPS" | jq -r '.experimentalSettings | split(",") | index("EnableA2A") != null')" "true"
+  check "A2A incoming" "$A2A_INCOMING_CT" "$(exp '."a2a-incoming"')"
+  check "A2A outgoing" "$A2A_OUTGOING_CT" "$(exp '."a2a-outgoing"')"
+  check "A2A outgoing healthy" "$A2A_OUTGOING_HEALTHY" "$(exp '."a2a-outgoing"')"
+fi
 
 # ── Connectors (ARM) ──
 CONNECTORS=$(arm_get "/DataConnectors")

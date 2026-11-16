@@ -18,6 +18,9 @@ param defaultModelProvider string = 'MicrosoftFoundry'
 param defaultModelName string = 'Automatic'
 param tags object = {}
 
+@description('Optional. Enable agent-to-agent communication for incoming or outgoing A2A connections.')
+param enableA2A bool = false
+
 @description('Optional. Resource ID of an existing User-Assigned Managed Identity. If provided, skips creating a new one.')
 param existingManagedIdentityId string = ''
 
@@ -158,6 +161,7 @@ resource sreAgent 'Microsoft.App/agents@2025-05-01-preview' = {
       EnableWorkspaceTools: true
       EnableHttpTriggers: true
       EnableV2AgentLoop: true
+      EnableA2A: enableA2A
     }
     vnetConfiguration: !empty(vnetSubnetId) ? {
       subnetResourceId: vnetSubnetId

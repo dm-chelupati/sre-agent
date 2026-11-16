@@ -367,6 +367,17 @@ if (Test-Path $toolPermissionsFile -PathType Leaf) {
     Write-Log 'tool-permissions: loaded'
 }
 
+$a2a = '{"incoming":[],"outgoing":[]}'
+$a2aFile = Join-Path $ConfigDir 'a2a.json'
+if (Test-Path $a2aFile -PathType Leaf) {
+    $a2a = Resolve-EnvVars (Get-Content $a2aFile -Raw)
+    $validA2a = $a2a | jq -e 'type == "object" and ((.incoming // []) | type == "array") and ((.outgoing // []) | type == "array")' 2>$null
+    if ($LASTEXITCODE -ne 0) {
+        throw "$a2aFile must contain incoming and outgoing arrays"
+    }
+    Write-Log "a2a: $($a2a | jq '((.incoming // []) | length) + ((.outgoing // []) | length)') connection(s)"
+}
+
 $connectorV2 = Collect-Config 'connectorv2'
 Write-Log "connectorv2: $($connectorV2 | jq 'length')"
 
@@ -541,6 +552,7 @@ $paramsObj = [ordered]@{
         'enableDailyHealthCheckTask'  = @{ value = [bool](Get-Prop $togglesObj 'enableDailyHealthCheckTask'  $false) }
         'enableDenyProdDeletesHook'   = @{ value = [bool](Get-Prop $togglesObj 'enableDenyProdDeletesHook'   $false) }
         'enableSafetyRulesPrompt'     = @{ value = [bool](Get-Prop $togglesObj 'enableSafetyRulesPrompt'     $false) }
+        'enableA2A'                   = @{ value = [bool](Get-Prop $togglesObj 'enableA2A'                    $false) }
         'enableWebhookBridge'         = @{ value = [bool](Get-Prop $togglesObj 'enableWebhookBridge'         $false) }
         'webhookBridgeTriggerUrl'     = @{ value = [string](Get-Prop $togglesObj 'webhookBridgeTriggerUrl'   '') }
         'connectors'                  = @{ value = $bicepConnectors }
@@ -575,6 +587,7 @@ $knowledgeItemsArr    = @(($knowledgeItems    | ConvertFrom-Json -ErrorAction Si
 $synthKnowledgeArr    = @(($synthKnowledge    | ConvertFrom-Json -ErrorAction SilentlyContinue))
 $repoInstructionsArr  = @(($repoInstructions  | ConvertFrom-Json -ErrorAction SilentlyContinue))
 $toolPermissionsObj   = ($toolPermissions     | ConvertFrom-Json -ErrorAction SilentlyContinue)
+$a2aObj               = ($a2a                 | ConvertFrom-Json -ErrorAction Stop)
 $connectorV2Arr       = @(($connectorV2       | ConvertFrom-Json -ErrorAction SilentlyContinue))
 $marketplacesArr      = @(($marketplaces      | ConvertFrom-Json -ErrorAction SilentlyContinue))
 $installationsArr     = @(($installations     | ConvertFrom-Json -ErrorAction SilentlyContinue))
@@ -615,6 +628,7 @@ $extrasObj = [ordered]@{
     synthesizedKnowledgeDir = $synthKnowledgeDir
     repoInstructions       = $repoInstructionsArr
     toolPermissions        = (Ensure-Obj $toolPermissionsObj)
+    a2a                    = (Ensure-Obj $a2aObj)
     connectorV2            = $connectorV2Arr
     plugins                = [ordered]@{
         marketplaces  = $marketplacesArr

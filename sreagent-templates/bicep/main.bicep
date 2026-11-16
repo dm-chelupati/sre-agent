@@ -95,6 +95,10 @@ param usePrivateDnsResolution bool = false
 // Each toggle synthesizes a single connector / hook / prompt entry
 // and merges it with the matching advanced array further down.
 
+// ── Agent-to-agent communication ──
+@description('Optional. Enable incoming or outgoing A2A connections. Configure connections post-deploy with a2a.json.')
+param enableA2A bool = false
+
 // ── Connector: Application Insights ──
 @description('Optional. Enable an Application Insights connector. Requires appInsightsResourceId + appInsightsAppId.')
 param enableAppInsightsConnector bool = false
@@ -197,6 +201,7 @@ module core './agent-core.bicep' = {
     defaultModelProvider: defaultModelProvider
     defaultModelName: defaultModelName
     tags: tags
+    enableA2A: enableA2A
     existingManagedIdentityId: existingManagedIdentityId
     existingAgentAppInsightsId: existingAgentAppInsightsId
     skipRoleAssignments: skipRoleAssignments

@@ -1,0 +1,79 @@
+{
+  "_recipe": "caldova-orders-sre",
+  "_scenario": "caldova-orders-sre",
+  "_description": "Caldova Pharmacy Prescription Orders team SRE Agent with Azure observability and a restricted A2A caller.",
+  "_prerequisites": [
+    "Caldova orders resource group",
+    "Application Insights component",
+    "Log Analytics workspace"
+  ],
+  "_prompts": {
+    "agentName": {
+      "ask": "Agent name",
+      "default": "caldova-orders-sre",
+      "required": true
+    },
+    "resourceGroup": {
+      "ask": "Resource group for the agents",
+      "default": "caldova-agents-rg",
+      "required": true
+    },
+    "location": {
+      "ask": "Region",
+      "default": "westus2",
+      "required": true
+    },
+    "targetRGs": {
+      "ask": "Orders and shared-observability resource groups to monitor (comma-separated)",
+      "default": "caldova-pharmacy-showcase-orders-rg,caldova-pharmacy-showcase-platform-rg",
+      "required": true
+    },
+    "lawId": {
+      "ask": "Orders Log Analytics workspace resource ID",
+      "required": true
+    },
+    "appInsightsId": {
+      "ask": "Orders Application Insights resource ID",
+      "required": true
+    },
+    "appInsightsAppId": {
+      "ask": "Orders Application Insights Application ID",
+      "required": true
+    },
+    "modelProvider": {
+      "ask": "AI model provider",
+      "default": "Anthropic",
+      "options": [
+        "Anthropic",
+        "Azure OpenAI"
+      ]
+    }
+  },
+  "identity": {
+    "agentName": "{{agentName}}",
+    "resourceGroup": "{{resourceGroup}}",
+    "subscription": "",
+    "location": "{{location}}",
+    "targetResourceGroups": [
+      "{{targetRGs}}"
+    ]
+  },
+  "access": {
+    "accessLevel": "Low",
+    "actionMode": "Review"
+  },
+  "upgradeChannel": "Preview",
+  "defaultModelProvider": "{{modelProvider}}",
+  "monthlyAgentUnitLimit": 10000,
+  "tags": {
+    "application": "caldova-pharmacy",
+    "team": "orders"
+  },
+  "toggles": {
+    "enableA2A": true,
+    "enableWebhookBridge": false,
+    "webhookBridgeTriggerUrl": ""
+  },
+  "existingUamiId": "",
+  "existingAgentAppInsightsId": ""
+}

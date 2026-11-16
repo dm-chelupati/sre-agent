@@ -270,6 +270,21 @@ if [[ -f "${DIR}/tool-permissions.json" ]]; then
   _log "tool-permissions: loaded"
 fi
 
+# A2A connections — single file with incoming/outgoing arrays
+A2A='{"incoming":[],"outgoing":[]}'
+if [[ -f "${DIR}/a2a.json" ]]; then
+  A2A=$(resolve_env_vars "$(cat "${DIR}/a2a.json")")
+  if ! echo "$A2A" | jq -e '
+    type == "object"
+    and ((.incoming // []) | type == "array")
+    and ((.outgoing // []) | type == "array")
+  ' >/dev/null; then
+    echo "Error: ${DIR}/a2a.json must contain incoming and outgoing arrays" >&2
+    exit 1
+  fi
+  _log "a2a: $(echo "$A2A" | jq '((.incoming // []) | length) + ((.outgoing // []) | length)') connection(s)"
+fi
+
 # GitHub domains (BYO App / PAT auth) — config/github-domains/*.yaml
 GITHUB_DOMAINS=$(resolve_env_vars "$(collect_config "github-domains")")
 _log "github-domains: $(echo "$GITHUB_DOMAINS" | jq 'length')"
@@ -392,6 +407,7 @@ jq -n \
       "enableDailyHealthCheckTask":    { "value": ($toggles.enableDailyHealthCheckTask // false) },
       "enableDenyProdDeletesHook":     { "value": ($toggles.enableDenyProdDeletesHook // false) },
       "enableSafetyRulesPrompt":       { "value": ($toggles.enableSafetyRulesPrompt // false) },
+      "enableA2A":                     { "value": ($toggles.enableA2A // false) },
       "enableWebhookBridge":           { "value": ($toggles.enableWebhookBridge // false) },
       "webhookBridgeTriggerUrl":       { "value": ($toggles.webhookBridgeTriggerUrl // "") },
       "connectors":                    { "value": [$connectors[] | select(.properties.dataConnectorType != "KnowledgeFile")] },
@@ -432,6 +448,7 @@ jq -n \
   --argjson tools "$TOOLS" \
   --argjson pluginConfigs "$PLUGIN_CONFIGS" \
   --argjson toolPermissions "$TOOL_PERMISSIONS" \
+  --argjson a2a "$A2A" \
   --argjson githubDomains "$GITHUB_DOMAINS" \
   --argjson connectorV2 "$CONNECTORV2" \
   '{
@@ -457,6 +474,7 @@ jq -n \
     "tools": $tools,
     "pluginConfigs": [($pluginConfigs // [])[] | {name: (.metadata.name // .name), type: (.type // "Plugin"), tags: (.tags // []), properties: (.spec // .properties // {})}],
     "toolPermissions": $toolPermissions,
+    "a2a": $a2a,
     "githubDomains": $githubDomains,
     "connectorV2": $connectorV2
   }' > "$EXTRAS_FILE"

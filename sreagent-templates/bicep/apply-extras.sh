@@ -1017,6 +1017,18 @@ if [[ "$count" -gt 0 ]]; then
   fi
 fi
 
+# 4j. A2A incoming/outgoing connections
+a2a_count=$(jq '((.a2a.incoming // []) | length) + ((.a2a.outgoing // []) | length)' "$FILE")
+if [[ "$a2a_count" -gt 0 ]]; then
+  if [[ "$DP_TOKEN_AVAILABLE" == "true" ]]; then
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    bash "${SCRIPT_DIR}/configure-a2a.sh" "$SUB" "$RG" "$AGENT" "$FILE"
+  else
+    echo "a2a — ⚠ skipped (no data-plane token)"
+    DP_SKIPPED_ITEMS+=("a2a (${a2a_count} connections)")
+  fi
+fi
+
 # 4i. Webhook bridge Logic App — auto-deploy if httpTriggers exist and enableWebhookBridge is set
 #     Solves the chicken-and-egg: trigger URL is only known after httpTrigger creation above.
 if [[ -n "$HTTP_TRIGGER_URL" ]]; then

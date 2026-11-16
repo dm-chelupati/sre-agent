@@ -1,0 +1,14 @@
+{
+  "incoming": [
+    {
+      "caller": {
+        "resourceGroup": "{{resourceGroup}}",
+        "name": "caldova-platform-sre"
+      },
+      "callerDisplayName": "Caldova Platform SRE",
+      "handler": "meta_agent",
+      "enabled": true
+    }
+  ],
+  "outgoing": []
+}

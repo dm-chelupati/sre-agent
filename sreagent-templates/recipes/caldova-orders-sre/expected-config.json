@@ -1,0 +1,15 @@
+{
+  "agent": true,
+  "connectors": 3,
+  "skills": 0,
+  "subagents": 0,
+  "hooks": 0,
+  "common-prompts": 0,
+  "repos": [],
+  "scheduled-tasks": 0,
+  "incident-filters": 0,
+  "incident-platforms": 0,
+  "a2a-incoming": 2,
+  "a2a-outgoing": 0,
+  "strictVerification": true
+}

@@ -1,0 +1,79 @@
+{
+  "_recipe": "caldova-platform-sre",
+  "_scenario": "caldova-platform-sre",
+  "_description": "Caldova Pharmacy shared-platform SRE Agent with Azure observability and one-level A2A delegation.",
+  "_prerequisites": [
+    "Caldova platform resource group",
+    "Application Insights component",
+    "Log Analytics workspace"
+  ],
+  "_prompts": {
+    "agentName": {
+      "ask": "Agent name",
+      "default": "caldova-platform-sre",
+      "required": true
+    },
+    "resourceGroup": {
+      "ask": "Resource group for the agents",
+      "default": "caldova-agents-rg",
+      "required": true
+    },
+    "location": {
+      "ask": "Region",
+      "default": "westus2",
+      "required": true
+    },
+    "targetRGs": {
+      "ask": "Platform resource groups to monitor (comma-separated)",
+      "default": "caldova-pharmacy-showcase-platform-rg",
+      "required": true
+    },
+    "lawId": {
+      "ask": "Platform Log Analytics workspace resource ID",
+      "required": true
+    },
+    "appInsightsId": {
+      "ask": "Platform Application Insights resource ID",
+      "required": true
+    },
+    "appInsightsAppId": {
+      "ask": "Platform Application Insights Application ID",
+      "required": true
+    },
+    "modelProvider": {
+      "ask": "AI model provider",
+      "default": "Anthropic",
+      "options": [
+        "Anthropic",
+        "Azure OpenAI"
+      ]
+    }
+  },
+  "identity": {
+    "agentName": "{{agentName}}",
+    "resourceGroup": "{{resourceGroup}}",
+    "subscription": "",
+    "location": "{{location}}",
+    "targetResourceGroups": [
+      "{{targetRGs}}"
+    ]
+  },
+  "access": {
+    "accessLevel": "Low",
+    "actionMode": "Review"
+  },
+  "upgradeChannel": "Preview",
+  "defaultModelProvider": "{{modelProvider}}",
+  "monthlyAgentUnitLimit": 10000,
+  "tags": {
+    "application": "caldova-pharmacy",
+    "team": "platform"
+  },
+  "toggles": {
+    "enableA2A": true,
+    "enableWebhookBridge": false,
+    "webhookBridgeTriggerUrl": ""
+  },
+  "existingUamiId": "",
+  "existingAgentAppInsightsId": ""
+}
