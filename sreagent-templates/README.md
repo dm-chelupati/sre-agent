@@ -72,9 +72,9 @@ cd sre-agent/sreagent-templates
 | [pagerduty-law-vmcosmos](recipes/pagerduty-law-vmcosmos/) | PagerDuty | VM + CosmosDB + HTTP error investigation with knowledge files and skills |
 | [dynatrace-mcp](recipes/dynatrace-mcp/) | Dynatrace | Dynatrace MCP connector for investigating application errors |
 | [minimal](recipes/minimal/) | (none) | Minimal agent — just infra + RBAC, add your own connectors and skills |
-| [caldova-platform-sre](recipes/caldova-platform-sre/) | Azure Monitor + A2A | Shared-platform agent with one-level delegation to the two Caldova application teams |
-| [caldova-orders-sre](recipes/caldova-orders-sre/) | Azure Monitor + A2A | Prescription Orders team agent accepting only the Caldova platform caller |
-| [caldova-medication-risk-sre](recipes/caldova-medication-risk-sre/) | Azure Monitor + A2A | Medication Risk team agent accepting only the Caldova platform caller |
+| [caldova-platform-azmon-lawappinsights-a2a](recipes/caldova-platform-azmon-lawappinsights-a2a/) | Azure Monitor + Log Analytics + Application Insights + A2A | Shared-platform agent with one-level delegation to the two Caldova application teams |
+| [caldova-orders-azmon-lawappinsights-a2a](recipes/caldova-orders-azmon-lawappinsights-a2a/) | Azure Monitor + Log Analytics + Application Insights + A2A | Prescription Orders team agent accepting only the Caldova platform caller |
+| [caldova-medication-risk-azmon-lawappinsights-a2a](recipes/caldova-medication-risk-azmon-lawappinsights-a2a/) | Azure Monitor + Log Analytics + Application Insights + A2A | Medication Risk team agent accepting only the Caldova platform caller |
 
 Each recipe README has the full parameter list, example values, and post-deploy steps.
 

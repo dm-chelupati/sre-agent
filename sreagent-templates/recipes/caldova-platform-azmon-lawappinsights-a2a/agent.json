@@ -1,6 +1,6 @@
 {
-  "_recipe": "caldova-platform-sre",
-  "_scenario": "caldova-platform-sre",
+  "_recipe": "caldova-platform-azmon-lawappinsights-a2a",
+  "_scenario": "caldova-platform-azmon-lawappinsights-a2a",
   "_description": "Caldova Pharmacy shared-platform SRE Agent with Azure observability and one-level A2A delegation.",
   "_prerequisites": [
     "Caldova platform resource group",

@@ -1,11 +1,11 @@
-# caldova-medication-risk-sre
+# caldova-medication-risk-azmon-lawappinsights-a2a
 
 Application-team SRE Agent for Caldova Pharmacy medication-safety decisions. It accepts A2A work only from the Caldova platform agent.
 
 ## Create
 
 ```bash
-./bin/new-agent.sh --recipe caldova-medication-risk-sre --non-interactive \
+./bin/new-agent.sh --recipe caldova-medication-risk-azmon-lawappinsights-a2a --non-interactive \
   --subscription <subscription-id> \
   --set lawId=<risk-law-resource-id> \
   --set appInsightsId=<risk-app-insights-resource-id> \

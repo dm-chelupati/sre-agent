@@ -6,7 +6,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TMP_DIR"' EXIT
 
-for recipe in caldova-platform-sre caldova-orders-sre caldova-medication-risk-sre; do
+for recipe in caldova-platform-azmon-lawappinsights-a2a caldova-orders-azmon-lawappinsights-a2a caldova-medication-risk-azmon-lawappinsights-a2a; do
   recipe_dir="${ROOT}/recipes/${recipe}"
   for required in README.md agent.json connectors.json expected-config.json roles.yaml a2a.json; do
     [[ -f "${recipe_dir}/${required}" ]] || { echo "Missing ${recipe}/${required}" >&2; exit 1; }
@@ -19,9 +19,9 @@ done
 jq -e '
   (.incoming | length) == 0
   and ([.outgoing[].target.name] | sort) == ["caldova-medication-risk-sre", "caldova-orders-sre"]
-' "${ROOT}/recipes/caldova-platform-sre/a2a.json" >/dev/null
+' "${ROOT}/recipes/caldova-platform-azmon-lawappinsights-a2a/a2a.json" >/dev/null
 
-for recipe in caldova-orders-sre caldova-medication-risk-sre; do
+for recipe in caldova-orders-azmon-lawappinsights-a2a caldova-medication-risk-azmon-lawappinsights-a2a; do
   jq -e '
     (.incoming | length) == 1
     and .incoming[0].caller.name == "caldova-platform-sre"

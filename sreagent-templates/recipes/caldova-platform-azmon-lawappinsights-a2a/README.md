@@ -1,11 +1,11 @@
-# caldova-platform-sre
+# caldova-platform-azmon-lawappinsights-a2a
 
 Shared-platform SRE Agent for Caldova Pharmacy. It observes the portal and gateway, then can delegate one task to either application-team agent and synthesize the returned result.
 
 ## Create
 
 ```bash
-./bin/new-agent.sh --recipe caldova-platform-sre --non-interactive \
+./bin/new-agent.sh --recipe caldova-platform-azmon-lawappinsights-a2a --non-interactive \
   --subscription <subscription-id> \
   --set lawId=<platform-law-resource-id> \
   --set appInsightsId=<platform-app-insights-resource-id> \

@@ -25,9 +25,9 @@ The application runs on Azure Container Apps. Orders and Medication Risk have in
 
 - [`app/`](app/) - TypeScript services and React portal
 - [`infra/`](infra/) - subscription-scope Bicep
-- [`../../sreagent-templates/recipes/caldova-platform-sre/`](../../sreagent-templates/recipes/caldova-platform-sre/) - platform agent recipe
-- [`../../sreagent-templates/recipes/caldova-orders-sre/`](../../sreagent-templates/recipes/caldova-orders-sre/) - Orders agent recipe
-- [`../../sreagent-templates/recipes/caldova-medication-risk-sre/`](../../sreagent-templates/recipes/caldova-medication-risk-sre/) - Medication Risk agent recipe
+- [`../../sreagent-templates/recipes/caldova-platform-azmon-lawappinsights-a2a/`](../../sreagent-templates/recipes/caldova-platform-azmon-lawappinsights-a2a/) - platform agent recipe
+- [`../../sreagent-templates/recipes/caldova-orders-azmon-lawappinsights-a2a/`](../../sreagent-templates/recipes/caldova-orders-azmon-lawappinsights-a2a/) - Orders agent recipe
+- [`../../sreagent-templates/recipes/caldova-medication-risk-azmon-lawappinsights-a2a/`](../../sreagent-templates/recipes/caldova-medication-risk-azmon-lawappinsights-a2a/) - Medication Risk agent recipe
 
 ## Team boundaries
 

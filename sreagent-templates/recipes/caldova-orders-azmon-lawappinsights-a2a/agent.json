@@ -1,16 +1,16 @@
 {
-  "_recipe": "caldova-medication-risk-sre",
-  "_scenario": "caldova-medication-risk-sre",
-  "_description": "Caldova Pharmacy Medication Risk team SRE Agent with Azure observability and a restricted A2A caller.",
+  "_recipe": "caldova-orders-azmon-lawappinsights-a2a",
+  "_scenario": "caldova-orders-azmon-lawappinsights-a2a",
+  "_description": "Caldova Pharmacy Prescription Orders team SRE Agent with Azure observability and a restricted A2A caller.",
   "_prerequisites": [
-    "Caldova medication-risk resource group",
+    "Caldova orders resource group",
     "Application Insights component",
     "Log Analytics workspace"
   ],
   "_prompts": {
     "agentName": {
       "ask": "Agent name",
-      "default": "caldova-medication-risk-sre",
+      "default": "caldova-orders-sre",
       "required": true
     },
     "resourceGroup": {
@@ -24,20 +24,20 @@
       "required": true
     },
     "targetRGs": {
-      "ask": "Medication Risk and shared-observability resource groups to monitor (comma-separated)",
-      "default": "caldova-pharmacy-showcase-risk-rg,caldova-pharmacy-showcase-platform-rg",
+      "ask": "Orders and shared-observability resource groups to monitor (comma-separated)",
+      "default": "caldova-pharmacy-showcase-orders-rg,caldova-pharmacy-showcase-platform-rg",
       "required": true
     },
     "lawId": {
-      "ask": "Medication Risk Log Analytics workspace resource ID",
+      "ask": "Orders Log Analytics workspace resource ID",
       "required": true
     },
     "appInsightsId": {
-      "ask": "Medication Risk Application Insights resource ID",
+      "ask": "Orders Application Insights resource ID",
       "required": true
     },
     "appInsightsAppId": {
-      "ask": "Medication Risk Application Insights Application ID",
+      "ask": "Orders Application Insights Application ID",
       "required": true
     },
     "modelProvider": {
@@ -67,7 +67,7 @@
   "monthlyAgentUnitLimit": 10000,
   "tags": {
     "application": "caldova-pharmacy",
-    "team": "medication-risk"
+    "team": "orders"
   },
   "toggles": {
     "enableA2A": true,
